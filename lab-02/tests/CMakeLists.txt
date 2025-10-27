@@ -13,7 +13,6 @@ enable_testing()
 
 add_executable(test_money test_money.cpp)
 
-# 🔧 Вот это ключевая строка:
 target_include_directories(test_money PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 target_link_libraries(test_money PRIVATE

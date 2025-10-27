@@ -22,7 +22,6 @@ Money::Money(const std::string &value) {
 }
 
 void Money::removeLeadingZeros() const {
-    // const метод, но модифицирует внутренние данные через const_cast
     auto *self = const_cast<Money *>(this);
     while (self->digits_.size() > 1 && self->digits_.back() == 0) {
         self->digits_.pop_back();
@@ -87,11 +86,11 @@ Money Money::subtract(const Money &other) const {
 }
 
 Money Money::addAssign(const Money &other) const {
-    return add(other); // возвращает новый объект
+    return add(other);
 }
 
 Money Money::subtractAssign(const Money &other) const {
-    return subtract(other); // возвращает новый объект
+    return subtract(other);
 }
 
 Money Money::copy() const {

@@ -20,8 +20,8 @@ public:
 
 class Money {
 private:
-    std::vector<unsigned char> digits_; // цифры, младшие сначала
-    void removeLeadingZeros() const;    // вспомогательный (иммутабельный)
+    std::vector<unsigned char> digits_;
+    void removeLeadingZeros() const;
     static int compare(const Money &a, const Money &b);
 
 public:
@@ -29,11 +29,11 @@ public:
     Money(); 
     explicit Money(const std::string &value);
 
-    // Методы арифметики (иммутабельные)
+    // Методы арифметики
     Money add(const Money &other) const;
     Money subtract(const Money &other) const;
-    Money addAssign(const Money &other) const;       // возвращает новый объект
-    Money subtractAssign(const Money &other) const;  // возвращает новый объект
+    Money addAssign(const Money &other) const;
+    Money subtractAssign(const Money &other) const;
     Money copy() const;
 
     // Методы сравнения
@@ -45,4 +45,4 @@ public:
     std::string toString() const;
 };
 
-#endif // MONEY_H
+#endif

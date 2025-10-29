@@ -6,8 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(money_lib
     src/Money.cpp
-    src/Money.h
 )
+
+target_include_directories(money_lib PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_executable(main_program
     src/main.cpp

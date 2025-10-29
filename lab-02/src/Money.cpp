@@ -9,22 +9,71 @@ Money::Money(const std::string &value) {
         throw InvalidMoneyException("Пустая строка недопустима");
     }
 
-    // Проверка корректности и запись в обратном порядке
-    for (auto it = value.rbegin(); it != value.rend(); ++it) {
-        if (!std::isdigit(*it)) {
-            throw InvalidMoneyException("Неверный символ в числе");
+    // Разделяем на рубли и копейки по точке (если есть)
+    std::string rubles;
+    std::string kopecks;
+
+    size_t dotPos = value.find('.');
+    if (dotPos == std::string::npos) {
+        // Нет точки: вся строка — цифры, последние 2 — копейки (при необходимости дополним нулями)
+        for (char c : value) {
+            if (!std::isdigit(static_cast<unsigned char>(c))) {
+                throw InvalidMoneyException("Неверный символ в числе");
+            }
         }
-        digits_.push_back(*it - '0');
+        if (value.size() <= 2) {
+            rubles = "0";
+            kopecks = std::string(2 - value.size(), '0') + value;
+        } else {
+            rubles = value.substr(0, value.size() - 2);
+            kopecks = value.substr(value.size() - 2);
+        }
+    } else {
+        // Есть точка: левая часть — рубли, правая — копейки (0..2 цифры)
+        rubles = value.substr(0, dotPos);
+        kopecks = value.substr(dotPos + 1);
+
+        if (rubles.empty()) rubles = "0";
+        for (char c : rubles) {
+            if (!std::isdigit(static_cast<unsigned char>(c))) {
+                throw InvalidMoneyException("Неверный символ в части рублей");
+            }
+        }
+
+        if (kopecks.size() > 2) {
+            throw InvalidMoneyException("Слишком много знаков копеек");
+        }
+        for (char c : kopecks) {
+            if (!std::isdigit(static_cast<unsigned char>(c))) {
+                throw InvalidMoneyException("Неверный символ в части копеек");
+            }
+        }
+        // Дополняем копейки до 2 знаков
+        while (kopecks.size() < 2) kopecks.push_back('0');
     }
 
-    // Удаляем ведущие нули
+    // Убираем ведущие нули у рублей (оставляя хотя бы один)
+    size_t start = 0;
+    while (start + 1 < rubles.size() && rubles[start] == '0') ++start;
+    rubles = rubles.substr(start);
+    if (rubles.empty()) rubles = "0";
+
+    // Собираем полную строку цифр без точки: rubles + kopecks
+    std::string full = rubles + kopecks;
+
+    // Переносим в digits_ в обратном порядке (LSB first)
+    digits_.clear();
+    digits_.reserve(full.size());
+    for (auto it = full.rbegin(); it != full.rend(); ++it) {
+        digits_.push_back(static_cast<unsigned char>(*it - '0'));
+    }
+
     removeLeadingZeros();
 }
 
-void Money::removeLeadingZeros() const {
-    auto *self = const_cast<Money *>(this);
-    while (self->digits_.size() > 1 && self->digits_.back() == 0) {
-        self->digits_.pop_back();
+void Money::removeLeadingZeros() {
+    while (digits_.size() > 1 && digits_.back() == 0) {
+        digits_.pop_back();
     }
 }
 
@@ -78,7 +127,7 @@ Money Money::subtract(const Money &other) const {
         } else {
             borrow = 0;
         }
-        result.digits_.push_back(diff);
+        result.digits_.push_back(static_cast<unsigned char>(diff));
     }
 
     result.removeLeadingZeros();
@@ -110,9 +159,22 @@ bool Money::isLess(const Money &other) const {
 }
 
 std::string Money::toString() const {
-    std::string result;
+    // Сформировать строку цифр в прямом порядке
+    std::string full;
+    full.reserve(digits_.size());
     for (auto it = digits_.rbegin(); it != digits_.rend(); ++it) {
-        result += static_cast<char>(*it + '0');
+        full += static_cast<char>(*it + '0');
     }
-    return result;
+
+    // Обеспечить минимум 2 цифры (для копеек)
+    if (full.size() < 2) {
+        full = std::string(2 - full.size(), '0') + full;
+    }
+
+    // Разделить на рубли и копейки и поставить точку
+    std::string rubles = full.substr(0, full.size() - 2);
+    std::string kopecks = full.substr(full.size() - 2);
+    if (rubles.empty()) rubles = "0";
+
+    return rubles + "." + kopecks;
 }

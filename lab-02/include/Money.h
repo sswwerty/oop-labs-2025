@@ -21,7 +21,7 @@ public:
 class Money {
 private:
     std::vector<unsigned char> digits_;
-    void removeLeadingZeros() const;
+    void removeLeadingZeros(); // удаляет ведущие нули старших разрядов, оставляя хотя бы один ноль
     static int compare(const Money &a, const Money &b);
 
 public:
@@ -41,7 +41,7 @@ public:
     bool isGreater(const Money &other) const;
     bool isLess(const Money &other) const;
 
-    // Преобразование в строку
+    // Преобразование в строку (RRR.KK)
     std::string toString() const;
 };
 

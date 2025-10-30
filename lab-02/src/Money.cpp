@@ -71,6 +71,27 @@ Money::Money(const std::string &value) {
     removeLeadingZeros();
 }
 
+// Правило пяти
+Money::Money(const Money &other) : digits_(other.digits_) {}
+
+Money::Money(Money &&other) noexcept : digits_(std::move(other.digits_)) {}
+
+Money &Money::operator=(const Money &other) {
+    if (this != &other) {
+        digits_ = other.digits_;
+    }
+    return *this;
+}
+
+Money &Money::operator=(Money &&other) noexcept {
+    if (this != &other) {
+        digits_ = std::move(other.digits_);
+    }
+    return *this;
+}
+
+Money::~Money() = default;
+
 void Money::removeLeadingZeros() {
     while (digits_.size() > 1 && digits_.back() == 0) {
         digits_.pop_back();

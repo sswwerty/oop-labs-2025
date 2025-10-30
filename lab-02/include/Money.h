@@ -29,6 +29,13 @@ public:
     Money(); 
     explicit Money(const std::string &value);
 
+    // Правило пяти
+    Money(const Money &other);                 // копирующий конструктор
+    Money(Money &&other) noexcept;             // перемещающий конструктор
+    Money &operator=(const Money &other);      // копирующее присваивание
+    Money &operator=(Money &&other) noexcept;  // перемещающее присваивание
+    ~Money();                                  // деструктор
+
     // Методы арифметики
     Money add(const Money &other) const;
     Money subtract(const Money &other) const;

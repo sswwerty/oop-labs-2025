@@ -45,7 +45,6 @@ public:
 
     ~PmrSinglyList() { clear(); }
 
-    // запретим копирование — проще для студенческой реализации
     PmrSinglyList(const PmrSinglyList&) = delete;
     PmrSinglyList& operator=(const PmrSinglyList&) = delete;
 

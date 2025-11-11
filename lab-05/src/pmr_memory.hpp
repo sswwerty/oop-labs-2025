@@ -1,8 +1,4 @@
 #pragma once
-// Простая реализация memory_resource — студент 2-го курса
-// Вариант 1: один большой блок, данные об аллокациях — std::list,
-// при деаллокации блоки можно периспользовать (free-list).
-
 #include <memory_resource>
 #include <list>
 #include <cstddef>

@@ -15,8 +15,6 @@ Makefile
 *.obj
 
 # Executables
-main
-tests
 *.exe
 *.out
 *.app

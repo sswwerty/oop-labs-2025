@@ -1,0 +1,2 @@
+/usr/bin/ar qc libbalagur_lib.a CMakeFiles/balagur_lib.dir/NPC.cpp.o CMakeFiles/balagur_lib.dir/Factories.cpp.o CMakeFiles/balagur_lib.dir/Visitor.cpp.o CMakeFiles/balagur_lib.dir/Observer.cpp.o CMakeFiles/balagur_lib.dir/Dungeon.cpp.o
+/usr/bin/ranlib libbalagur_lib.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblab07_lib.a CMakeFiles/lab07_lib.dir/NPC.cpp.o CMakeFiles/lab07_lib.dir/Factories.cpp.o CMakeFiles/lab07_lib.dir/Visitor.cpp.o CMakeFiles/lab07_lib.dir/Dungeon.cpp.o
+/usr/bin/ranlib liblab07_lib.a

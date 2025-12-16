@@ -11,20 +11,41 @@
 #include <coroutine>
 #include <chrono>
 #include <thread>
+#include <atomic>
 
 // Вспомогательный класс для awaitable (приостановка выполнения)
 struct SleepAwaitable {
     std::chrono::milliseconds duration;
+    const std::atomic<bool>* gameRunningPtr;
+    
+    SleepAwaitable(std::chrono::milliseconds d, const std::atomic<bool>* gr = nullptr)
+        : duration(d), gameRunningPtr(gr) {}
     
     bool await_ready() const noexcept { 
-        return duration.count() <= 0;
+        // Если задержка <= 0, не приостанавливаемся
+        if (duration.count() <= 0) {
+            return true;
+        }
+        // Выполняем задержку здесь, разбивая на части для проверки gameRunning
+        if (gameRunningPtr) {
+            auto chunks = duration.count() / 10;
+            for (int i = 0; i < chunks && gameRunningPtr->load(); ++i) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            }
+        } else {
+            std::this_thread::sleep_for(duration);
+        }
+        // Возвращаем true, чтобы не вызывать await_suspend
+        // Это упрощает реализацию и избегает проблем с resume()
+        return true;
     }
     
     void await_suspend(std::coroutine_handle<> h) const {
-        // Делаем задержку и сразу возобновляем выполнение
-        std::this_thread::sleep_for(duration);
-        // Возобновляем выполнение coroutine
-        h.resume();
+        // Не должно вызываться, так как await_ready возвращает true
+        // Но на всякий случай возобновляем coroutine
+        if (!h.done()) {
+            h.resume();
+        }
     }
     
     void await_resume() const noexcept {}

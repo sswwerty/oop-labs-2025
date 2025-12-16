@@ -15,22 +15,9 @@
 class Visitor {
 public:
     virtual ~Visitor() = default;
-    virtual void visit(Orc& o) = 0;
-    virtual void visit(Squirrel& s) = 0;
-    virtual void visit(Druid& d) = 0;
     virtual void visit(Elf& e) = 0;
-    virtual void visit(Dragon& dr) = 0;
-    virtual void visit(Bear& b) = 0;
+    virtual void visit(Squirrel& s) = 0;
     virtual void visit(Bandit& ba) = 0;
-    virtual void visit(Werewolf& w) = 0;
-    virtual void visit(Princess& p) = 0;
-    virtual void visit(Toad& t) = 0;
-    virtual void visit(Slaver& sl) = 0;
-    virtual void visit(Pegasus& pe) = 0;
-    virtual void visit(Bittern& bi) = 0;
-    virtual void visit(Desman& de) = 0;
-    virtual void visit(Bull& bu) = 0;
-    virtual void visit(Knight& k) = 0;
 };
 
 /*
@@ -40,22 +27,9 @@ class BattleVisitor : public Visitor {
 public:
     BattleVisitor(std::vector<std::shared_ptr<NPC>>& npcs);
 
-    void visit(Orc& o) override;
-    void visit(Squirrel& s) override;
-    void visit(Druid& d) override;
     void visit(Elf& e) override;
-    void visit(Dragon& dr) override;
-    void visit(Bear& b) override;
+    void visit(Squirrel& s) override;
     void visit(Bandit& ba) override;
-    void visit(Werewolf& w) override;
-    void visit(Princess& p) override;
-    void visit(Toad& t) override;
-    void visit(Slaver& sl) override;
-    void visit(Pegasus& pe) override;
-    void visit(Bittern& bi) override;
-    void visit(Desman& de) override;
-    void visit(Bull& bu) override;
-    void visit(Knight& k) override;
 
     // Обработать бой с кубиками
     void processBattle(size_t attackerIdx, size_t defenderIdx);

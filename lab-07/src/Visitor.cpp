@@ -6,7 +6,7 @@
 BattleVisitor::BattleVisitor(std::vector<std::shared_ptr<NPC>>& npcs)
     : npcsRef(npcs) {}
 
-void BattleVisitor::visit(Orc& o) {
+void BattleVisitor::visit(Elf& e) {
     processBattle(attackerIndex, defenderIndex);
 }
 
@@ -14,59 +14,7 @@ void BattleVisitor::visit(Squirrel& s) {
     processBattle(attackerIndex, defenderIndex);
 }
 
-void BattleVisitor::visit(Druid& d) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Elf& e) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Dragon& dr) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Bear& b) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
 void BattleVisitor::visit(Bandit& ba) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Werewolf& w) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Princess& p) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Toad& t) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Slaver& sl) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Pegasus& pe) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Bittern& bi) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Desman& de) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Bull& bu) {
-    processBattle(attackerIndex, defenderIndex);
-}
-
-void BattleVisitor::visit(Knight& k) {
     processBattle(attackerIndex, defenderIndex);
 }
 

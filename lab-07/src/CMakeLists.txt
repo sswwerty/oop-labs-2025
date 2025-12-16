@@ -14,3 +14,4 @@ target_include_directories(lab07_lib PUBLIC
 add_executable(lab07 main.cpp)
 target_link_libraries(lab07 lab07_lib)
 
+

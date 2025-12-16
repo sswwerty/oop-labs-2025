@@ -6,7 +6,7 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-07/src/../include -I/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-07/src
 
-CXX_FLAGSarm64 = -std=gnu++17 -arch arm64
+CXX_FLAGSarm64 = -std=gnu++20 -arch arm64
 
-CXX_FLAGS = -std=gnu++17 -arch arm64
+CXX_FLAGS = -std=gnu++20 -arch arm64
 

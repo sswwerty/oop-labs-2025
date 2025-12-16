@@ -84,197 +84,20 @@ int BattleVisitor::rollDice() const {
 }
 
 bool BattleVisitor::canKill(NPCType attacker, NPCType defender) const {
-    // Таблица убиваемости согласно заданию
-    // Орк может убивать: Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::ORC) {
-        return defender == NPCType::SQUIRREL || defender == NPCType::DRUID ||
-               defender == NPCType::ELF || defender == NPCType::DRAGON ||
-               defender == NPCType::BEAR || defender == NPCType::BANDIT ||
-               defender == NPCType::WEREWOLF || defender == NPCType::PRINCESS ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Белка может убивать: Орка, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::SQUIRREL) {
-        return defender == NPCType::ORC || defender == NPCType::DRUID ||
-               defender == NPCType::ELF || defender == NPCType::DRAGON ||
-               defender == NPCType::BEAR || defender == NPCType::BANDIT ||
-               defender == NPCType::WEREWOLF || defender == NPCType::PRINCESS ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Друид может убивать: Орка, Белку, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::DRUID) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::ELF || defender == NPCType::DRAGON ||
-               defender == NPCType::BEAR || defender == NPCType::BANDIT ||
-               defender == NPCType::WEREWOLF || defender == NPCType::PRINCESS ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Эльф может убивать: Орка, Белку, Друида, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
+    // Таблица убиваемости для трех типов: Эльф, Белка, Разбойник
+    // Эльф может убивать: Белку, Разбойника
     if (attacker == NPCType::ELF) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::DRAGON ||
-               defender == NPCType::BEAR || defender == NPCType::BANDIT ||
-               defender == NPCType::WEREWOLF || defender == NPCType::PRINCESS ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
+        return defender == NPCType::SQUIRREL || defender == NPCType::BANDIT;
     }
     
-    // Дракон может убивать: Орка, Белку, Друида, Эльфа, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::DRAGON) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::BEAR || defender == NPCType::BANDIT ||
-               defender == NPCType::WEREWOLF || defender == NPCType::PRINCESS ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
+    // Белка может убивать: Эльфа, Разбойника
+    if (attacker == NPCType::SQUIRREL) {
+        return defender == NPCType::ELF || defender == NPCType::BANDIT;
     }
     
-    // Медведь может убивать: Орка, Белку, Друида, Эльфа, Дракона, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::BEAR) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BANDIT ||
-               defender == NPCType::WEREWOLF || defender == NPCType::PRINCESS ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Разбойник может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
+    // Разбойник может убивать: Эльфа, Белку
     if (attacker == NPCType::BANDIT) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::WEREWOLF || defender == NPCType::PRINCESS ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Оборотень может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::WEREWOLF) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::PRINCESS ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Принцесса может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::PRINCESS) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::WEREWOLF ||
-               defender == NPCType::TOAD || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Жаба может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Работорговца, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::TOAD) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::WEREWOLF ||
-               defender == NPCType::PRINCESS || defender == NPCType::SLAVER ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Работорговец может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Пегаса, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::SLAVER) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::WEREWOLF ||
-               defender == NPCType::PRINCESS || defender == NPCType::TOAD ||
-               defender == NPCType::PEGASUS || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Пегас может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Выпь, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::PEGASUS) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::WEREWOLF ||
-               defender == NPCType::PRINCESS || defender == NPCType::TOAD ||
-               defender == NPCType::SLAVER || defender == NPCType::BITTERN ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Выпь может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выхухоль, Быка, Странствующего рыцаря
-    if (attacker == NPCType::BITTERN) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::WEREWOLF ||
-               defender == NPCType::PRINCESS || defender == NPCType::TOAD ||
-               defender == NPCType::SLAVER || defender == NPCType::PEGASUS ||
-               defender == NPCType::DESMAN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Выхухоль может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Быка, Странствующего рыцаря
-    if (attacker == NPCType::DESMAN) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::WEREWOLF ||
-               defender == NPCType::PRINCESS || defender == NPCType::TOAD ||
-               defender == NPCType::SLAVER || defender == NPCType::PEGASUS ||
-               defender == NPCType::BITTERN || defender == NPCType::BULL ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Бык может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Странствующего рыцаря
-    if (attacker == NPCType::BULL) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::WEREWOLF ||
-               defender == NPCType::PRINCESS || defender == NPCType::TOAD ||
-               defender == NPCType::SLAVER || defender == NPCType::PEGASUS ||
-               defender == NPCType::BITTERN || defender == NPCType::DESMAN ||
-               defender == NPCType::KNIGHT;
-    }
-    
-    // Странствующий рыцарь может убивать: Орка, Белку, Друида, Эльфа, Дракона, Медведя, Разбойника, Оборотня, Принцессу, Жабу, Работорговца, Пегаса, Выпь, Выхухоль, Быка
-    if (attacker == NPCType::KNIGHT) {
-        return defender == NPCType::ORC || defender == NPCType::SQUIRREL ||
-               defender == NPCType::DRUID || defender == NPCType::ELF ||
-               defender == NPCType::DRAGON || defender == NPCType::BEAR ||
-               defender == NPCType::BANDIT || defender == NPCType::WEREWOLF ||
-               defender == NPCType::PRINCESS || defender == NPCType::TOAD ||
-               defender == NPCType::SLAVER || defender == NPCType::PEGASUS ||
-               defender == NPCType::BITTERN || defender == NPCType::DESMAN ||
-               defender == NPCType::BULL;
+        return defender == NPCType::ELF || defender == NPCType::SQUIRREL;
     }
     
     return false;

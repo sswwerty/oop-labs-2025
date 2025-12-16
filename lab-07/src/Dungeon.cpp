@@ -83,22 +83,9 @@ void Dungeon::print() const {
 
 std::string Dungeon::getTypeString(NPCType type) const {
     switch (type) {
-        case NPCType::ORC: return "ORC";
-        case NPCType::SQUIRREL: return "SQUIRREL";
-        case NPCType::DRUID: return "DRUID";
         case NPCType::ELF: return "ELF";
-        case NPCType::DRAGON: return "DRAGON";
-        case NPCType::BEAR: return "BEAR";
+        case NPCType::SQUIRREL: return "SQUIRREL";
         case NPCType::BANDIT: return "BANDIT";
-        case NPCType::WEREWOLF: return "WEREWOLF";
-        case NPCType::PRINCESS: return "PRINCESS";
-        case NPCType::TOAD: return "TOAD";
-        case NPCType::SLAVER: return "SLAVER";
-        case NPCType::PEGASUS: return "PEGASUS";
-        case NPCType::BITTERN: return "BITTERN";
-        case NPCType::DESMAN: return "DESMAN";
-        case NPCType::BULL: return "BULL";
-        case NPCType::KNIGHT: return "KNIGHT";
         default: return "UNKNOWN";
     }
 }
@@ -263,6 +250,91 @@ void Dungeon::printThread() {
             print();
         }
     }
+}
+
+// Реализация coroutine для объединения перемещения и сражения
+MovementBattleCoroutine Dungeon::movementAndBattleCoroutine() {
+    while (gameRunning.load()) {
+        // Перемещаем всех живых NPC
+        {
+            std::shared_lock<std::shared_mutex> npcsLock(npcsMutex);
+            size_t n = npcs.size();
+            npcsLock.unlock();
+            
+            for (size_t i = 0; i < n && gameRunning.load(); ++i) {
+                moveNPC(i);
+            }
+        }
+        
+        // Проверяем бои и добавляем их в очередь
+        checkForBattles();
+        
+        // Обрабатываем несколько боев из очереди (до 10 за итерацию)
+        for (int battleCount = 0; battleCount < 10 && gameRunning.load(); ++battleCount) {
+            std::pair<std::weak_ptr<NPC>, std::weak_ptr<NPC>> battle;
+            bool hasBattle = false;
+            
+            {
+                std::lock_guard<std::mutex> queueLock(battleQueueMutex);
+                if (!battleQueue.empty()) {
+                    battle = battleQueue.front();
+                    battleQueue.pop();
+                    hasBattle = true;
+                }
+            }
+            
+            if (!hasBattle) break;
+            
+            auto attacker = battle.first.lock();
+            auto defender = battle.second.lock();
+            
+            if (attacker && defender && attacker->isAlive() && defender->isAlive()) {
+                // Находим индексы для visitor
+                std::shared_lock<std::shared_mutex> npcsLock(npcsMutex);
+                size_t attackerIdx = 0, defenderIdx = 0;
+                bool foundAttacker = false, foundDefender = false;
+                
+                for (size_t i = 0; i < npcs.size(); ++i) {
+                    if (npcs[i] == attacker) {
+                        attackerIdx = i;
+                        foundAttacker = true;
+                    }
+                    if (npcs[i] == defender) {
+                        defenderIdx = i;
+                        foundDefender = true;
+                    }
+                    if (foundAttacker && foundDefender) break;
+                }
+                
+                if (foundAttacker && foundDefender) {
+                    BattleVisitor visitor(npcs);
+                    visitor.processBattle(attackerIdx, defenderIdx);
+                }
+            }
+        }
+        
+        // Удаляем мертвых NPC
+        removeDeadNPCs();
+        
+        // Приостанавливаемся перед следующей итерацией
+        // Используем простую задержку
+        if (gameRunning.load()) {
+            co_await SleepAwaitable{std::chrono::milliseconds(100)};
+        }
+    }
+}
+
+// Поток для выполнения coroutine
+void Dungeon::movementAndBattleThread() {
+    // Создаем coroutine - она начнет выполняться сразу
+    // Coroutine выполняется синхронно в этом потоке
+    // Цикл while в coroutine будет выполняться до тех пор, пока gameRunning == true
+    // После завершения цикла coroutine автоматически завершится (final_suspend = suspend_never)
+    MovementBattleCoroutine coro = movementAndBattleCoroutine();
+    
+    // Сохраняем coroutine в переменной, чтобы она не была уничтожена преждевременно
+    // Coroutine будет выполняться до тех пор, пока gameRunning == true
+    // Когда gameRunning станет false, цикл в coroutine завершится, и coroutine автоматически уничтожится
 }
 
 void Dungeon::runGame() {

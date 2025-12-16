@@ -7,11 +7,9 @@
 #include <vector>
 #include <iomanip>
 
-// Список всех типов NPC
+// Список всех типов NPC (только Эльфы, Белки и Разбойники)
 const std::vector<std::string> NPC_TYPES = {
-    "ORC", "SQUIRREL", "DRUID", "ELF", "DRAGON", "BEAR", "BANDIT",
-    "WEREWOLF", "PRINCESS", "TOAD", "SLAVER", "PEGASUS",
-    "BITTERN", "DESMAN", "BULL", "KNIGHT"
+    "ELF", "SQUIRREL", "BANDIT"
 };
 
 void createRandomNPCs(Dungeon& dungeon, int count) {
@@ -40,12 +38,11 @@ int main() {
     std::cout << "Starting game for 30 seconds...\n\n";
     
     // Запускаем потоки с использованием лямбда-функций
-    std::thread movement([&dungeon]() {
-        dungeon.movementThread();
+    // Поток с coroutine для перемещения и сражения (объединены в одном потоке)
+    std::thread movementAndBattle([&dungeon]() {
+        dungeon.movementAndBattleThread();
     });
-    std::thread battle([&dungeon]() {
-        dungeon.battleThread();
-    });
+    // Основной поток для вывода карты
     std::thread printer([&dungeon]() {
         dungeon.printThread();
     });
@@ -57,8 +54,7 @@ int main() {
     dungeon.stopGame();
     
     // Ждем завершения потоков
-    movement.join();
-    battle.join();
+    movementAndBattle.join();
     printer.join();
     
     // Выводим список выживших
@@ -73,22 +69,10 @@ int main() {
         for (const auto& npc : survivors) {
             std::string typeStr;
             switch (npc->getType()) {
-                case NPCType::ORC: typeStr = "ORC"; break;
-                case NPCType::SQUIRREL: typeStr = "SQUIRREL"; break;
-                case NPCType::DRUID: typeStr = "DRUID"; break;
                 case NPCType::ELF: typeStr = "ELF"; break;
-                case NPCType::DRAGON: typeStr = "DRAGON"; break;
-                case NPCType::BEAR: typeStr = "BEAR"; break;
+                case NPCType::SQUIRREL: typeStr = "SQUIRREL"; break;
                 case NPCType::BANDIT: typeStr = "BANDIT"; break;
-                case NPCType::WEREWOLF: typeStr = "WEREWOLF"; break;
-                case NPCType::PRINCESS: typeStr = "PRINCESS"; break;
-                case NPCType::TOAD: typeStr = "TOAD"; break;
-                case NPCType::SLAVER: typeStr = "SLAVER"; break;
-                case NPCType::PEGASUS: typeStr = "PEGASUS"; break;
-                case NPCType::BITTERN: typeStr = "BITTERN"; break;
-                case NPCType::DESMAN: typeStr = "DESMAN"; break;
-                case NPCType::BULL: typeStr = "BULL"; break;
-                case NPCType::KNIGHT: typeStr = "KNIGHT"; break;
+                default: typeStr = "UNKNOWN"; break;
             }
             std::cout << std::setw(12) << typeStr << " " << npc->getName()
                       << " at (" << std::fixed << std::setprecision(2)

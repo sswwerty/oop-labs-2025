@@ -23,3 +23,4 @@ std::shared_ptr<NPC> NPCFactory::create(const std::string& type,
     throw std::runtime_error("Unknown NPC type: " + type);
 }
 
+

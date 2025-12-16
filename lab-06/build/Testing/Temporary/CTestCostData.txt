@@ -1,0 +1,11 @@
+FactoryTest.CreateElf 3 0.00189569
+FactoryTest.CreateBandit 3 0.000876806
+FactoryTest.CreateSquirrelFromFile 3 0.000888139
+FactoryTest.MalformedLineThrows 3 0.00104947
+BattleTest.ElfKillsBandit 3 0.000811319
+BattleTest.BanditKillsSquirrel 3 0.000813458
+BattleTest.SquirrelKillsElf 3 0.000803667
+BattleTest.SameTypeMutualKill 3 0.000868792
+DungeonValidation.RejectsOutOfBoundsNPC 3 0.000756764
+DungeonValidation.RejectsDuplicateNamesPerType 3 0.00652556
+---

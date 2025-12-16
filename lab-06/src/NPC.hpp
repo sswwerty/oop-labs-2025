@@ -2,7 +2,7 @@
 #include <string>
 #include <memory>
 
-class Visitor; // forward declaration
+class Visitor;
 
 enum class NPCType { SQUIRREL = 0, ELF = 1, BANDIT = 2 };
 

@@ -1,6 +1,0 @@
-/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-07/build/CMakeFiles/edit_cache.dir
-/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-07/build/CMakeFiles/rebuild_cache.dir
-/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-07/build/src/CMakeFiles/lab07_lib.dir
-/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-07/build/src/CMakeFiles/lab07.dir
-/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-07/build/src/CMakeFiles/edit_cache.dir
-/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-07/build/src/CMakeFiles/rebuild_cache.dir

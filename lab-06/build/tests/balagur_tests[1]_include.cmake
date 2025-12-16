@@ -1,5 +1,0 @@
-if(EXISTS "/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-06/build/tests/balagur_tests[1]_tests.cmake")
-  include("/Users/anastasiafimina/Desktop/ВУЗ/oop-labs-2025/lab-06/build/tests/balagur_tests[1]_tests.cmake")
-else()
-  add_test(balagur_tests_NOT_BUILT balagur_tests_NOT_BUILT)
-endif()
